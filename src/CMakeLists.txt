@@ -10,7 +10,7 @@ MESSAGE(STATUS "Installation path prefix: " ${CMAKE_INSTALL_PREFIX})
 MESSAGE(STATUS "Library installation directory: " ${CMAKE_INSTALL_LIBDIR})
 MESSAGE(STATUS "PROJECT_SOURCE_DIR:" ${PROJECT_SOURCE_DIR})
 
-# Where DB Wrapper's header files can be found.
+# Where header files can be found.
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
 
 # Include sub directory adapters and utils.
@@ -24,7 +24,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.c)
 # Not compile test files into library
 IF(NOT ENABLE_TEST)
 	SET (TEST_CPP_LIST
-#		utils/DBWTestUtil.cpp
+#		utils/MTestUtil.cpp
 		stub.cpp
 	)
 
@@ -41,25 +41,25 @@ ADD_LIBRARY (${PROJECT_NAME} SHARED ${SOURCES})
 SET_TARGET_PROPERTIES(
 		${PROJECT_NAME}
 		PROPERTIES
-		SOVERSION ${DBW_VERSION_MAJOR}
-		VERSION ${DBW_VERSION}
+		SOVERSION ${M_VERSION_MAJOR}
+		VERSION ${M_VERSION}
 )
 
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
 IF(NOT ENABLE_TEST)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} event event_pthreads)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} pthread)
 ELSE()
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} event event_pthreads)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} pthread)
 ENDIF()
 
-# Install libdbwraper to /usr/local/lib by default
+# Install lib to /usr/local/lib by default
 INSTALL(
 		TARGETS ${PROJECT_NAME}
 		LIBRARY
 		DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-# Install DB Wrapper's header files to /usr/local/include/${PROJECT_NAME}
+# Install header files to /usr/local/include/${PROJECT_NAME}
 INSTALL(
 		DIRECTORY ${PROJECT_SOURCE_DIR}/include/
 		DESTINATION include/${PROJECT_NAME}
