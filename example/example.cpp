@@ -3,6 +3,7 @@
 #include "li/connMiddleWare.hpp"
 #include "li/transConn.hpp"
 #include "li/util.hpp"
+#include "li/connManager.hpp"
 
 int main()
 {
@@ -18,5 +19,10 @@ int main()
     transConnMiddleWare<TOKEN, liConnInfo> test;
     auto ins = test.instance();
     ins->test1();
+    auto ins1 = transConnMiddleWare<TOKEN, liConnInfo>::instance();
+    ins1->test1();
+
+    connManager<transConnMiddleWare<TOKEN, liConnInfo>, liServiceDiscovery<liConnInfo>> manager_test;
+    manager_test.test();
 
 }
